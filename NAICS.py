@@ -2,11 +2,13 @@ import pandas as pd
 import os
 import requests
 import streamlit as st
+
+import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 import re
-import nltk
+
 
 
 # Download the stopwords data if it hasn't been downloaded yet
