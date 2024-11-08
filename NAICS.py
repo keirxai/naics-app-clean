@@ -9,17 +9,21 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 import re
 
-# Attempt to download 'stopwords' and 'punkt' if they aren't already available
-try:
-    stop_words = set(stopwords.words("english"))
-except LookupError:
-    nltk.download("stopwords")
-    stop_words = set(stopwords.words("english"))
-    
-try:
-    nltk.data.find("tokenizers/punkt")
-except LookupError:
-    nltk.download("punkt")
+import nltk
+
+def download_nltk_resources():
+    try:
+        nltk.data.find("tokenizers/punkt")
+    except LookupError:
+        nltk.download("punkt")
+
+    try:
+        nltk.data.find("corpora/stopwords")
+    except LookupError:
+        nltk.download("stopwords")
+
+# Call the function at the start of the script
+download_nltk_resources()
 
 # Initialize stop words and lemmatizer
 stop_words = set(stopwords.words("english"))
