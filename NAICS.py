@@ -20,7 +20,7 @@ lemmatizer = WordNetLemmatizer()
 # URL for the file on Google Drive or your chosen storage
 url = 'https://drive.google.com/uc?export=download&id=1ZX35OuMvhaaq4q83E8pI7lqWLAhnkE0B'
 
-a# Check if the file already exists
+# Check if the file already exists
 if not os.path.exists("naics_data.csv"):
     response = requests.get(url)
     with open("naics_data.csv", "wb") as file:
