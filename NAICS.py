@@ -6,8 +6,9 @@ from nltk.stem import WordNetLemmatizer
 import re
 import nltk
 
-# Set up NLTK data path and download necessary data if not already present
-nltk.data.path.append("/Users/rachaelgurney/nltk_data")  # Adjust path as needed
+# Download the stopwords data if it hasn't been downloaded yet
+nltk.download('stopwords')
+nltk.download('punkt')  # If your code also uses word_tokenize or other tokenizers
 
 # Initialize stop words and lemmatizer
 stop_words = set(stopwords.words("english"))
