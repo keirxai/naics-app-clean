@@ -18,7 +18,7 @@ stop_words.update(custom_stop_words)
 
 lemmatizer = WordNetLemmatizer()
 # URL for the file on Google Drive or your chosen storage
-url = 'https://drive.google.com/file/d/1ZX35OuMvhaaq4q83E8pI7lqWLAhnkE0B/view?usp=sharing'
+url = 'https://drive.google.com/uc?export=download&id=1ZX35OuMvhaaq4q83E8pI7lqWLAhnkE0B'
 
 a# Check if the file already exists
 if not os.path.exists("naics_data.csv"):
