@@ -15,6 +15,19 @@ import re
 nltk.download('stopwords')
 nltk.download('punkt')  # If your code also uses word_tokenize or other tokenizers
 
+
+# Attempt to download 'stopwords' and 'punkt' if they aren't already available
+try:
+    stop_words = set(stopwords.words("english"))
+except LookupError:
+    nltk.download("stopwords")
+    stop_words = set(stopwords.words("english"))
+    
+try:
+    nltk.data.find("tokenizers/punkt")
+except LookupError:
+    nltk.download("punkt")
+
 # Initialize stop words and lemmatizer
 stop_words = set(stopwords.words("english"))
 custom_stop_words = {"mining", "services", "industry", "manufacturing", "and", "or"}
