@@ -9,13 +9,6 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 import re
 
-
-
-# Download the stopwords data if it hasn't been downloaded yet
-nltk.download('stopwords')
-nltk.download('punkt')  # If your code also uses word_tokenize or other tokenizers
-
-
 # Attempt to download 'stopwords' and 'punkt' if they aren't already available
 try:
     stop_words = set(stopwords.words("english"))
@@ -32,16 +25,19 @@ except LookupError:
 stop_words = set(stopwords.words("english"))
 custom_stop_words = {"mining", "services", "industry", "manufacturing", "and", "or"}
 stop_words.update(custom_stop_words)
-
 lemmatizer = WordNetLemmatizer()
+
 # URL for the file on Google Drive or your chosen storage
 url = 'https://drive.google.com/uc?export=download&id=1ZX35OuMvhaaq4q83E8pI7lqWLAhnkE0B'
 
 # Check if the file already exists
 if not os.path.exists("naics_data.csv"):
     response = requests.get(url)
-    with open("naics_data.csv", "wb") as file:
-        file.write(response.content)
+    if response.status_code == 200:
+        with open("naics_data.csv", "wb") as file:
+            file.write(response.content)
+    else:
+        st.error("Failed to download naics_data.csv. Please check the file URL or network connection.")
 
 # Load the CSV file
 df = pd.read_csv('naics_data.csv')  # Replace with your file path
