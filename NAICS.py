@@ -1,35 +1,36 @@
+import re
 import pandas as pd
 import os
 import requests
 import streamlit as st
-
-import nltk
 from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
-import re
 
-import nltk
-
-def download_nltk_resources():
-    try:
-        nltk.data.find("tokenizers/punkt")
-    except LookupError:
-        nltk.download("punkt")
-
-    try:
-        nltk.data.find("corpora/stopwords")
-    except LookupError:
-        nltk.download("stopwords")
-
-# Call the function at the start of the script
-download_nltk_resources()
+# Custom function to tokenize and process text
+def simple_tokenize(text):
+    # Remove non-alphabetic characters and split by whitespace
+    words = re.sub(r'[^a-zA-Z\s]', '', text.lower()).split()
+    return words
 
 # Initialize stop words and lemmatizer
+nltk.download('stopwords')
 stop_words = set(stopwords.words("english"))
 custom_stop_words = {"mining", "services", "industry", "manufacturing", "and", "or"}
 stop_words.update(custom_stop_words)
 lemmatizer = WordNetLemmatizer()
+
+# Define a function to generate keywords from multiple columns using custom tokenization
+def process_keywords(*args):
+    keywords = []
+    for text in args:
+        if pd.isna(text):
+            continue
+        words = simple_tokenize(text)  # Use custom tokenization
+        keywords.extend([
+            lemmatizer.lemmatize(word)
+            for word in words if word not in stop_words and len(word) > 2
+        ])
+    return ' '.join(sorted(set(keywords)))
 
 # URL for the file on Google Drive or your chosen storage
 url = 'https://drive.google.com/uc?export=download&id=1ZX35OuMvhaaq4q83E8pI7lqWLAhnkE0B'
