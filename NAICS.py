@@ -96,7 +96,7 @@ def process_keywords(*args):
     for text in args:
         if pd.isna(text):
             continue
-        words = word_tokenize(re.sub(r'[^a-zA-Z\s]', '', text.lower()))
+        words = simple_tokenize(re.sub(r'[^a-zA-Z\s]', '', text.lower()))
         keywords.extend([
             lemmatizer.lemmatize(word)
             for word in words if word not in stop_words and len(word) > 2
