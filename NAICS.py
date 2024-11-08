@@ -3,21 +3,28 @@ import pandas as pd
 import os
 import requests
 import streamlit as st
-from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
+
+# Define a basic list of stopwords
+stop_words = set([
+    "i", "me", "my", "myself", "we", "our", "ours", "ourselves", "you", "your", "yours", "yourself", "yourselves",
+    "he", "him", "his", "himself", "she", "her", "hers", "herself", "it", "its", "itself", "they", "them", "their",
+    "theirs", "themselves", "what", "which", "who", "whom", "this", "that", "these", "those", "am", "is", "are",
+    "was", "were", "be", "been", "being", "have", "has", "had", "having", "do", "does", "did", "doing", "a", "an",
+    "the", "and", "but", "if", "or", "because", "as", "until", "while", "of", "at", "by", "for", "with", "about",
+    "against", "between", "into", "through", "during", "before", "after", "above", "below", "to", "from", "up",
+    "down", "in", "out", "on", "off", "over", "under", "again", "further", "then", "once", "here", "there", "when",
+    "where", "why", "how", "all", "any", "both", "each", "few", "more", "most", "other", "some", "such", "no", "nor",
+    "not", "only", "own", "same", "so", "than", "too", "very", "s", "t", "can", "will", "just", "don", "should",
+    "now", "mining", "services", "industry", "manufacturing", "and", "or"
+])
+
+lemmatizer = WordNetLemmatizer()
 
 # Custom function to tokenize and process text
 def simple_tokenize(text):
-    # Remove non-alphabetic characters and split by whitespace
     words = re.sub(r'[^a-zA-Z\s]', '', text.lower()).split()
     return words
-
-# Initialize stop words and lemmatizer
-nltk.download('stopwords')
-stop_words = set(stopwords.words("english"))
-custom_stop_words = {"mining", "services", "industry", "manufacturing", "and", "or"}
-stop_words.update(custom_stop_words)
-lemmatizer = WordNetLemmatizer()
 
 # Define a function to generate keywords from multiple columns using custom tokenization
 def process_keywords(*args):
@@ -25,12 +32,13 @@ def process_keywords(*args):
     for text in args:
         if pd.isna(text):
             continue
-        words = simple_tokenize(text)  # Use custom tokenization
+        words = simple_tokenize(text)
         keywords.extend([
             lemmatizer.lemmatize(word)
             for word in words if word not in stop_words and len(word) > 2
         ])
     return ' '.join(sorted(set(keywords)))
+
 
 # URL for the file on Google Drive or your chosen storage
 url = 'https://drive.google.com/uc?export=download&id=1ZX35OuMvhaaq4q83E8pI7lqWLAhnkE0B'
